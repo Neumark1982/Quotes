@@ -81,15 +81,15 @@ def create_quote():
 @app.route("/quotes/<int:quote_id>", methods = ['PUT'])
 def edit_quote(quote_id):
     new_quote = request.json
-    if new_quote['rating'] > 5:
+    if 'rating' in new_quote and new_quote['rating'] > 5:
         del new_quote['rating']
     for quote in quotes:
         if quote['id'] == quote_id:
             for key, value in quote.items():                
-                if new_quote.get(key) is None:
-                    return f'Quote with id={quote_id} no found', 404
-                quote[key] = new_quote.get(key)
+                if new_quote.get(key) is not None:                    
+                    quote[key] = new_quote.get(key)
             return quote, 201
+    return f'Quote with id={quote_id} no found', 404
     
     
 @app.route("/quotes/<int:quote_id>", methods = ['DELETE'])

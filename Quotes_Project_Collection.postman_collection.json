@@ -1,0 +1,180 @@
+{
+	"info": {
+		"_postman_id": "61bbed70-9c72-4d8e-bfaa-cc0733d77ad2",
+		"name": "Quotes_Project_Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Hello",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "get_all_quotes",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "get_quote_by_id",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "get_random_quote",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:5000/quotes/random",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"quotes",
+						"random"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create_new_quote",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "edit_quote",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{    \n    \"rating\": 3,\n    \"author\": \"Tram Tram\",\n    \"text\": \"Tram Trams's Edited Quote\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "127.0.0.1:5000/quotes/9",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"quotes",
+						"9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete_quote_by_id",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:5000/quotes/3",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"quotes",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "filter",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:5000/qoutes/filter?rating=5&author=Yoggi Berra",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"qoutes",
+						"filter"
+					],
+					"query": [
+						{
+							"key": "rating",
+							"value": "5"
+						},
+						{
+							"key": "author",
+							"value": "Yoggi Berra"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "rating_diapazon",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "127.0.0.1:5000/quotes/rating?minrating=5&maxrating=5",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"quotes",
+						"rating"
+					],
+					"query": [
+						{
+							"key": "minrating",
+							"value": "5"
+						},
+						{
+							"key": "maxrating",
+							"value": "5"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
