@@ -3,9 +3,9 @@ from random import choice
 from flask import request
 
 about_me = {
-   "name": "Евгений",
-   "surname": "Юрченко",
-   "email": "eyurchenko@specialist.ru"
+   "name": "Иван",
+   "surname": "Тихомиров",
+   "email": ""
 }
 
 quotes = [
@@ -34,8 +34,6 @@ quotes = [
        "rating": 5
    },
 ]
-
-# TODO: добавьте .gitignore в проект
 
 app = Flask(__name__)
 
@@ -87,21 +85,18 @@ def edit_quote(quote_id):
         del new_quote['rating']
     for quote in quotes:
         if quote['id'] == quote_id:
-            for key, value in quote.items():
-                # TODO: вместо "== None" в питоне рекомендуется писать "is None"
-                #  в данной ситуации лучше так:
-                #  if new_quote.get(key):
-                if not new_quote.get(key) == None:
-                    quote[key] = new_quote.get(key)
+            for key, value in quote.items():                
+                if new_quote.get(key) is None:
+                    return f'Quote with id={quote_id} no found', 404
+                quote[key] = new_quote.get(key)
             return quote, 201
-    return f'Quote with id={quote_id} no found', 404
+    
     
 @app.route("/quotes/<int:quote_id>", methods = ['DELETE'])
 def delete_quote(quote_id):
-    # TODO: ненужно перебирать элементы списка по индексам, в питоне есть инструмент для прямого перебора элементов
-    for i in range(len(quotes)):
-        if quotes[i]['id'] == quote_id:
-            del quotes[i]
+    for quote in quotes:
+        if quote['id'] == quote_id:
+            quotes.remove(quote)
             return f'Quote with id={quote_id} was deleted', 200
     return f'Quote with id={quote_id} no found', 404
 
@@ -116,8 +111,6 @@ def filter():
         for key, value in quote.items():
             if quote[key] == args_filter.get(key):
                 count +=1
-        # TODO: убирайте отладочные print'ы из итогового кода
-        print(count)
         if count == len(args_filter):
             filtered_results.append(quote['text'])
     return filtered_results, 200
