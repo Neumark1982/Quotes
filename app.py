@@ -15,6 +15,8 @@ app.app_context().push()
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+# TODO: в проекте не подключены миграции, отсутствует папка migrations
+
 class QuoteModel(db.Model):
    id = db.Column(db.Integer, primary_key=True)
    author = db.Column(db.String(32), unique=False)
@@ -41,6 +43,8 @@ def get_quotes():
 
 @app.route("/quotes/<int:quote_id>", methods=['GET'])
 def get_quote_by_id(quote_id):
+   # TODO: тут вы выполняете два запроса к БД, вместо одного. Так делать не стоит!
+   # Сначала получите объект, а потом с ним работайте
     if QuoteModel.query.get(quote_id) is None:
         return f"Quote with id={quote_id} not found", 404
     quote_id_result = QuoteModel.query.get(quote_id)
@@ -58,6 +62,8 @@ def create_quote():
     new_quote = request.json
     if not 'rating' in new_quote:
         new_quote['rating'] = random.randint(1, 5)
+    # TODO: если рейтинг не задая явно(не получен с клиента), устанавливает его рандомно - плохая идея.
+    # Правильнее задать фиксированное значение по умолчанию и лучше это сделать на уровне самого класса QuoteModel в конструкторе
     new_db_quote = QuoteModel(new_quote['author'], new_quote['text'], new_quote['rating'])
     db.session.add(new_db_quote)
     db.session.commit()
@@ -66,6 +72,7 @@ def create_quote():
 
 @app.route("/quotes/<int:quote_id>", methods=['PUT'])
 def edit_quote(quote_id):
+    # TODO: тут таже проблема - лишние запросы к БД.
     if QuoteModel.query.get(quote_id) is None:
         return f"Quote with id={quote_id} not found", 404
     planned_changed_data = request.json
@@ -81,6 +88,7 @@ def edit_quote(quote_id):
 
 @app.route("/quotes/<int:quote_id>", methods=['DELETE'])
 def delete_quote(quote_id):
+    # TODO: ну и тут
     if QuoteModel.query.get(quote_id) is None:
         return f"Quote with id={quote_id} not found", 404
     db.session.delete(QuoteModel.query.get(quote_id))
@@ -93,9 +101,11 @@ def rating():
     args_diap = request.args.to_dict()
     args_diap['minrating'] = int(args_diap['minrating'])
     args_diap['maxrating'] = int(args_diap['maxrating']) 
+    # TODO: делать фильтрацию/выборку на уровне питона - неверно, фильтрацией должна заниматься БД
     for quote in QuoteModel.query.all():
             if args_diap['minrating'] <= quote.rating <= args_diap['maxrating']:
                 rating_diapazon_results.append(quote.text)
+    # TODO: нужно возвращать не только текст цитат, а цитаты полностью (с id, автором и т.д.)
     return rating_diapazon_results, 200
 
 @app.route("/qoutes/filter", methods = ['GET'])
